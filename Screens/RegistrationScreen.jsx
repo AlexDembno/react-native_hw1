@@ -78,107 +78,101 @@ function RegistrationScreen() {
               >
                 Регистрация
               </Text>
-              <KeyboardAvoidingView
-                behavior={Platform.OS == "ios" ? "padding" : "height"}
-              >
-                <View style={styles.form}>
-                  <View style={{ marginBottom: 16 }}>
-                    <TextInput
-                      onFocus={() => {
-                        setShowKeybord(true);
-                        setFocus("login");
-                      }}
-                      style={{
-                        ...styles.input,
-                        fontFamily: "RobotoMedium",
-                        fontSize: 16,
-                        borderColor:
-                          focuses === "login" ? "#FF6C00" : "#E8E8E8",
-                        backgroundColor: "#F6F6F6",
-                      }}
-                      placeholder="Логин"
-                      value={state.name}
-                      onChangeText={(value) =>
-                        setState((prevState) => ({ ...prevState, name: value }))
-                      }
-                    />
-                  </View>
-                  <View style={{ marginBottom: 16 }}>
-                    <TextInput
-                      onFocus={() => {
-                        setShowKeybord(true);
-                        setFocus("email");
-                      }}
-                      style={{
-                        ...styles.input,
-                        fontFamily: "RobotoMedium",
-                        fontSize: 16,
-                        borderColor:
-                          focuses === "email" ? "#FF6C00" : "#E8E8E8",
-                        backgroundColor: "#F6F6F6",
-                      }}
-                      placeholder="Адрес электронной почты"
-                      value={state.email}
-                      onChangeText={(value) =>
-                        setState((prevState) => ({
-                          ...prevState,
-                          email: value,
-                        }))
-                      }
-                    />
-                  </View>
-                  <View style={{ marginBottom: 43 }}>
-                    <TextInput
-                      onFocus={() => {
-                        setShowKeybord(true);
-                        setFocus("password");
-                      }}
-                      style={{
-                        ...styles.input,
-                        fontFamily: "RobotoMedium",
-                        fontSize: 16,
-                        borderColor:
-                          focuses === "password" ? "#FF6C00" : "#E8E8E8",
-                        backgroundColor: "#F6F6F6",
-                      }}
-                      placeholder="Пароль"
-                      value={state.password}
-                      onChangeText={(value) =>
-                        setState((prevState) => ({
-                          ...prevState,
-                          password: value,
-                        }))
-                      }
-                      secureTextEntry={true}
-                    />
-                  </View>
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={styles.btn}
-                    onPress={handlSubmit}
-                  >
-                    <Text
-                      style={{
-                        ...styles.btnText,
-                        fontFamily: "RobotoRegular",
-                        fontSize: 16,
-                      }}
-                    >
-                      Зарегистрироваться
-                    </Text>
-                  </TouchableOpacity>
+              <View style={styles.form}>
+                <View style={{ marginBottom: 16 }}>
+                  <TextInput
+                    onFocus={() => {
+                      setShowKeybord(true);
+                      setFocus("login");
+                    }}
+                    style={{
+                      ...styles.input,
+                      fontFamily: "RobotoMedium",
+                      fontSize: 16,
+                      borderColor: focuses === "login" ? "#FF6C00" : "#E8E8E8",
+                      backgroundColor: "#F6F6F6",
+                    }}
+                    placeholder="Логин"
+                    value={state.name}
+                    onChangeText={(value) =>
+                      setState((prevState) => ({ ...prevState, name: value }))
+                    }
+                  />
+                </View>
+                <View style={{ marginBottom: 16 }}>
+                  <TextInput
+                    onFocus={() => {
+                      setShowKeybord(true);
+                      setFocus("email");
+                    }}
+                    style={{
+                      ...styles.input,
+                      fontFamily: "RobotoMedium",
+                      fontSize: 16,
+                      borderColor: focuses === "email" ? "#FF6C00" : "#E8E8E8",
+                      backgroundColor: "#F6F6F6",
+                    }}
+                    placeholder="Адрес электронной почты"
+                    value={state.email}
+                    onChangeText={(value) =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        email: value,
+                      }))
+                    }
+                  />
+                </View>
+                <View style={{ marginBottom: 43 }}>
+                  <TextInput
+                    onFocus={() => {
+                      setShowKeybord(true);
+                      setFocus("password");
+                    }}
+                    style={{
+                      ...styles.input,
+                      fontFamily: "RobotoMedium",
+                      fontSize: 16,
+                      borderColor:
+                        focuses === "password" ? "#FF6C00" : "#E8E8E8",
+                      backgroundColor: "#F6F6F6",
+                    }}
+                    placeholder="Пароль"
+                    value={state.password}
+                    onChangeText={(value) =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        password: value,
+                      }))
+                    }
+                    secureTextEntry={true}
+                  />
+                </View>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={styles.btn}
+                  onPress={handlSubmit}
+                >
                   <Text
                     style={{
-                      ...styles.text,
+                      ...styles.btnText,
                       fontFamily: "RobotoRegular",
                       fontSize: 16,
-                      marginBottom: 32,
                     }}
                   >
-                    Уже есть аккаунт? Войти
+                    Зарегистрироваться
                   </Text>
-                </View>
-              </KeyboardAvoidingView>
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    ...styles.text,
+                    fontFamily: "RobotoRegular",
+                    fontSize: 16,
+                    marginBottom: 32,
+                  }}
+                >
+                  Уже есть аккаунт? Войти
+                </Text>
+              </View>
             </View>
           </View>
         </ImageBackground>
