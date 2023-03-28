@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -11,22 +11,13 @@ import {
   Keyboard,
   ImageBackground,
 } from "react-native";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 
 const initialValue = {
   email: "",
   password: "",
 };
 
-SplashScreen.preventAutoHideAsync();
-
-function LoginScreen() {
-  const [fontsLoaded] = useFonts({
-    RobotoRegular: require("../assets/fonts/Roboto-Regular.ttf"),
-    RobotoMedium: require("../assets/fonts/Roboto-Medium.ttf"),
-  });
-
+function LoginScreen({ onLayoutRootView }) {
   const [showKeybord, setShowKeybord] = useState(false);
   const [state, setState] = useState(initialValue);
   const [focuses, setFocus] = useState("");
@@ -46,15 +37,6 @@ function LoginScreen() {
     setFocus("");
   };
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-  if (!fontsLoaded) {
-    return null;
-  }
-
   return (
     <TouchableWithoutFeedback onPress={hideKeybord}>
       <KeyboardAvoidingView
@@ -64,7 +46,7 @@ function LoginScreen() {
       >
         <ImageBackground
           style={styles.image}
-          source={require("../assets/images/photoBackground.jpg")}
+          source={require("../../assets/images/photoBackground.jpg")}
         >
           <View style={styles.formContainer}>
             <View>
