@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+
 import {
   StyleSheet,
   View,
@@ -12,15 +13,33 @@ import {
   ImageBackground,
 } from "react-native";
 
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+
 const initialValue = {
   email: "",
   password: "",
 };
 
-function LoginScreen({ onLayoutRootView }) {
+SplashScreen.preventAutoHideAsync();
+
+function LoginScreen({ navigation }) {
   const [showKeybord, setShowKeybord] = useState(false);
   const [state, setState] = useState(initialValue);
   const [focuses, setFocus] = useState("");
+
+  const [fontsLoaded] = useFonts({
+    RobotoRegular: require("../../assets/fonts/Roboto-Regular.ttf"),
+    RobotoMedium: require("../../assets/fonts/Roboto-Medium.ttf"),
+  });
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const hideKeybord = () => {
     Keyboard.dismiss();
@@ -123,16 +142,21 @@ function LoginScreen({ onLayoutRootView }) {
                     Войти
                   </Text>
                 </TouchableOpacity>
-                <Text
-                  style={{
-                    ...styles.text,
-                    fontFamily: "RobotoRegular",
-                    fontSize: 16,
-                    marginBottom: 32,
-                  }}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Registration")}
                 >
-                  Нет аккаунта? Зарегистрироваться
-                </Text>
+                  <Text
+                    style={{
+                      ...styles.text,
+                      fontFamily: "RobotoRegular",
+                      fontSize: 16,
+                      marginBottom: 32,
+                      color: "#1B4371",
+                    }}
+                  >
+                    Нет аккаунта? Зарегистрироваться
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
