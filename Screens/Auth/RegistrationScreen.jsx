@@ -211,7 +211,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-
     height: 50,
     borderRadius: 6,
     padding: 16,
