@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Camera } from "expo-camera";
 import {
   StyleSheet,
@@ -17,6 +18,10 @@ import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+import { storage, db } from "../../firebase/config";
+
 const initialValue = {
   name: "",
   map: "",
@@ -28,8 +33,11 @@ function CreatePostsScreen({ navigation }) {
   const [showKeybord, setShowKeybord] = useState(false);
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
-  const [state, setState] = useState(initialValue);
+  const [description, setDescription] = useState(initialValue);
   const [focuses, setFocus] = useState("");
+  const [location, setLocation] = useState(null);
+
+  const { userId, login } = useSelector((state) => state.auth);
 
   const [fontsLoaded] = useFonts({
     RobotoRegular: require("../../assets/fonts/Roboto-Regular.ttf"),
@@ -39,11 +47,13 @@ function CreatePostsScreen({ navigation }) {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      console.log("status camera Permissions ---> ", status);
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+        console.log("Permission to access location was denied");
         return;
       }
+
+      // let location = await Location.getCurrentPositionAsync({});
+      // setLocation(location);
     })();
   }, []);
 
@@ -58,22 +68,54 @@ function CreatePostsScreen({ navigation }) {
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
-    console.log(photo);
     setPhoto(photo.uri);
-    const location = await Location.getCurrentPositionAsync();
-    console.log("location --->", location);
+    const location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
   };
 
   const sendPhoto = async () => {
-    console.log("photo", photo);
-    navigation.navigate("DefaultScreen", { photo });
+    await uploadPostToServer();
+    navigation.navigate("Публикации");
+    setDescription(initialValue);
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        photo,
+        description,
+        location: location.coords,
+        userId,
+        login,
+        createdAt: Date.now().toString(),
+      });
+    } catch (error) {
+      console.log("Error adding document: ", error.message);
+    }
   };
 
   const hideKeybord = () => {
     Keyboard.dismiss();
     setShowKeybord(false);
-    setState(initialValue);
+    setDescription(initialValue);
     setFocus("");
+  };
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const uniquePostId = Date.now().toString();
+
+    try {
+      const storageRef = ref(storage, `postImage/${uniquePostId}`);
+      await uploadBytes(storageRef, file);
+      const processedPhoto = await getDownloadURL(storageRef);
+      return processedPhoto;
+    } catch (error) {
+      console.log("error.message", error.message);
+    }
   };
 
   return (
@@ -131,9 +173,9 @@ function CreatePostsScreen({ navigation }) {
                     borderColor: focuses === "name" ? "#FF6C00" : "#E8E8E8",
                   }}
                   placeholder="Название..."
-                  value={state.name}
+                  value={description.name}
                   onChangeText={(value) =>
-                    setState((prevState) => ({
+                    setDescription((prevState) => ({
                       ...prevState,
                       name: value,
                     }))
@@ -153,9 +195,9 @@ function CreatePostsScreen({ navigation }) {
                     borderColor: focuses === "map" ? "#FF6C00" : "#E8E8E8",
                   }}
                   placeholder="Местность..."
-                  value={state.map}
+                  value={description.map}
                   onChangeText={(value) =>
-                    setState((prevState) => ({
+                    setDescription((prevState) => ({
                       ...prevState,
                       map: value,
                     }))

@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator();
 function useRouting(isAuth) {
   if (!isAuth) {
     return (
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator>
         <Stack.Screen
           options={{ headerShown: false }}
           name="Login"
@@ -41,11 +41,12 @@ function useRouting(isAuth) {
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="grid" size={24} color="grey" />
           ),
+          headerShown: false,
           header: ({ focused, size, color }) => (
             <MaterialIcons name="logout" size={24} color="grey" />
           ),
         }}
-        name="PostsScreen"
+        name="Публикации"
         component={PostsScreen}
       />
       <Tab.Screen
@@ -59,7 +60,7 @@ function useRouting(isAuth) {
             />
           ),
         }}
-        name="CreatePostsScreen"
+        name="Создать публикацию"
         component={CreatePostsScreen}
       />
       <Tab.Screen
@@ -67,6 +68,7 @@ function useRouting(isAuth) {
           tabBarIcon: ({ focused, size, color }) => (
             <AntDesign name="user" size={24} color="grey" />
           ),
+          headerShown: false,
         }}
         name="ProfileScreen"
         component={ProfileScreen}

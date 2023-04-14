@@ -11,9 +11,11 @@ import {
   Keyboard,
   ImageBackground,
 } from "react-native";
-
+import { useDispatch } from "react-redux";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+
+import { authSingUp } from "../../redux/auth/authOperation";
 
 const initialValue = {
   name: "",
@@ -27,6 +29,8 @@ function RegistrationScreen({ navigation }) {
   const [showKeybord, setShowKeybord] = useState(false);
   const [state, setState] = useState(initialValue);
   const [focuses, setFocus] = useState("");
+
+  const dispatch = useDispatch();
 
   const [fontsLoaded] = useFonts({
     RobotoRegular: require("../../assets/fonts/Roboto-Regular.ttf"),
@@ -51,7 +55,7 @@ function RegistrationScreen({ navigation }) {
   const handlSubmit = () => {
     Keyboard.dismiss();
     setShowKeybord(false);
-    console.log(state);
+    dispatch(authSingUp(state));
     setState(initialValue);
     setFocus("");
   };

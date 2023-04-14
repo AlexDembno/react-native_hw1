@@ -16,6 +16,9 @@ import {
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
+import { authSingIn } from "../../redux/auth/authOperation";
+import { useDispatch } from "react-redux";
+
 const initialValue = {
   email: "",
   password: "",
@@ -27,6 +30,8 @@ function LoginScreen({ navigation }) {
   const [showKeybord, setShowKeybord] = useState(false);
   const [state, setState] = useState(initialValue);
   const [focuses, setFocus] = useState("");
+
+  const dispatch = useDispatch();
 
   const [fontsLoaded] = useFonts({
     RobotoRegular: require("../../assets/fonts/Roboto-Regular.ttf"),
@@ -51,7 +56,7 @@ function LoginScreen({ navigation }) {
   const handlSubmit = () => {
     Keyboard.dismiss();
     setShowKeybord(false);
-    console.log(state);
+    dispatch(authSingIn(state));
     setState(initialValue);
     setFocus("");
   };
