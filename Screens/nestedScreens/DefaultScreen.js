@@ -19,6 +19,7 @@ import {
 import { db } from "../../firebase/config";
 import { EvilIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { authSingOut } from "../../redux/auth/authOperation";
 
 import { where, onSnapshot } from "firebase/firestore";
 
