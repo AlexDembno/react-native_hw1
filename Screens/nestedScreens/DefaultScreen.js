@@ -32,10 +32,6 @@ function DefaultScreen({ navigation }) {
   };
 
   const getAllPosts = async () => {
-    // const querySnapshot = await getDocs(collection(db, "posts"));
-    // querySnapshot.forEach((doc) => {
-    //   setPosts([{ ...doc.data(), id: doc.id }]);
-
     const q = await query(collection(db, "posts"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const posts = [];
